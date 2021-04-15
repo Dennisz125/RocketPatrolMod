@@ -1,3 +1,10 @@
+/*
+Name: Dennis Zabluda
+Project Name: Rocket Patrol Mod
+Date: 4/14/21
+Duration: Unkown
+*/
+
 // game config
 let config = {
     type: Phaser.CANVAS,
