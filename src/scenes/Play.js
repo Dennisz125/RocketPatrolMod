@@ -25,8 +25,13 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
-        // add rocket (p1)
+        // add player1 (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+
+        // add player2 if needed (p2)
+        if (false) {
+            this.p2Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.3, 0);
+        }
 
         // add spaceships (x3)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
@@ -74,6 +79,22 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
+        // display timer
+        let timerConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+            top: 5,
+            bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.timerRight = this.add.text(game.config.width - borderUISize*4 - borderPadding, borderUISize + borderPadding*2, this.timer / 1000, timerConfig);
+
     }
 
     update() {
@@ -86,6 +107,8 @@ class Play extends Phaser.Scene {
         }
         
         this.starfield.tilePositionX -= starSpeed;
+        
+        this.updateTimer();  
         if (!this.gameOver) {
             this.p1Rocket.update();
             this.ship01.update();   // update spaceships (x3)
@@ -136,5 +159,10 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score;
 
         this.sound.play('sfx_explosion');
+      }
+
+      updateTimer() {
+        //update timer
+        this.timerRight.text = Math.ceil((this.clock.delay - this.clock.getElapsed()) / 1000); 
       }
   }
