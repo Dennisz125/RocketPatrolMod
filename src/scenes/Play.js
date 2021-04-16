@@ -10,7 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starfield.png');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
-      }
+    }
 
     create() {
         // place tile sprite
@@ -157,9 +157,9 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
-        // add additional time to clock
-        //var addTime = 
-        //this.clock.delay = game.settings.gameTimer;
+        // add additional time to clock, addition is based on ship's points
+        this.clock.delay += 500 * ship.points;
+
         this.sound.play('sfx_explosion');
       }
 
