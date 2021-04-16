@@ -30,10 +30,18 @@ class Menu extends Phaser.Scene {
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2.5, game.config.height/2 + borderUISize*2 + borderPadding*2, 'Press D for two player mode:', menuConfig).setOrigin(0.5);
 
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);   
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN); 
+
+        // add boolen val
+        this.isTwoPlayer = false;
+        menuConfig.backgroundColor = '#F3B141';
+        menuConfig.color = '#843605';
+        this.twoPlayerBoolText = this.add.text(game.config.width/7*6, game.config.height/2 + borderUISize*2 + borderPadding*2, this.isTwoPlayer.toString(), menuConfig).setOrigin(0.5);
     }
     
     update() {
@@ -41,7 +49,8 @@ class Menu extends Phaser.Scene {
           // easy mode
           game.settings = {
             spaceshipSpeed: 3,
-            gameTimer: 60000    
+            gameTimer: 60000,
+            twoPlayer: this.isTwoPlayer    
           }
           this.sound.play('sfx_select');
           this.scene.start('playScene');    
@@ -50,10 +59,19 @@ class Menu extends Phaser.Scene {
           // hard mode
           game.settings = {
             spaceshipSpeed: 4,
-            gameTimer: 45000    
+            gameTimer: 45000,
+            twoPlayer: this.isTwoPlayer   
           }
           this.sound.play('sfx_select');
           this.scene.start('playScene');    
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyDown)) {
+          if (this.isTwoPlayer) {
+            this.isTwoPlayer = false;
+          } else {
+            this.isTwoPlayer = true;
+          }
+          this.twoPlayerBoolText.text = this.isTwoPlayer.toString();
         }
       }
   }

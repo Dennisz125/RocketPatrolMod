@@ -23,3 +23,4 @@ let starSpeed = 3;
 // reserve keyboard vars
 let keyF, keyR, keyLEFT, keyRIGHT; //p1
 let keyW, keyS, keyA, keyD; //p2
+let keyDown; //misc
