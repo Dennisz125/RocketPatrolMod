@@ -72,7 +72,7 @@ class Play extends Phaser.Scene {
         // GAME OVER flag
         this.gameOver = false;
 
-        // 60-second play clock
+        // play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
@@ -157,7 +157,9 @@ class Play extends Phaser.Scene {
         // score add and repaint
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
-
+        // add additional time to clock
+        //var addTime = 
+        //this.clock.delay = game.settings.gameTimer;
         this.sound.play('sfx_explosion');
       }
 
