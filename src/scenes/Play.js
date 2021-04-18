@@ -22,7 +22,7 @@ class Play extends Phaser.Scene {
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
 
         // green UI background
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
+        //this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
 
         // white borders
         /*
@@ -73,7 +73,7 @@ class Play extends Phaser.Scene {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#000000',
             align: 'right',
             padding: {
             top: 5,
@@ -81,7 +81,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(borderPadding, borderPadding*2, this.p1Score, scoreConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -99,15 +99,15 @@ class Play extends Phaser.Scene {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#000000',
             align: 'right',
             padding: {
             top: 5,
             bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 75
         }
-        this.timerRight = this.add.text(game.config.width - borderUISize*4 - borderPadding, borderUISize + borderPadding*2, this.timer / 1000, timerConfig);
+        this.timerRight = this.add.text(game.config.width - borderUISize*2 - borderPadding*2, borderPadding*2, this.timer / 1000, timerConfig);
 
     }
 
@@ -188,13 +188,41 @@ class Play extends Phaser.Scene {
         // temporarily hide ship
         ship.alpha = 0;
         // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');             // play explode animation
-        boom.on('animationcomplete', () => {    // callback after anim completes
+        //let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
+        //boom.anims.play('explode');             // play explode animation
+
+        var particles = this.add.particles('rocket');
+        var min, max;
+        if (ship.dir) {
+            min = 0;
+            max = 90;
+        } else {
+            min = 90;
+            max = 360;
+        }
+        var emitter = particles.createEmitter({
+            x : ship.x,
+            y : ship.y,
+            speed: { min: 0, max: 100 },
+            angle: { min: min, max: max },
+            scale: { start: 0.5, end: 0 },
+            blendMode: 'SCREEN',
+            lifespan: 1000,
+            gravityY: 300
+        });
+
+        this.time.delayedCall(1000, () => {
+            particles.destroy();
+            ship.reset();                   // reset ship position
+            ship.alpha = 1;                 // make ship visible again
+        });
+        
+        
+        /*boom.on('animationcomplete', () => {    // callback after anim completes
           ship.reset();                         // reset ship position
           ship.alpha = 1;                       // make ship visible again
           boom.destroy();                       // remove explosion sprite
-        });
+        });*/
         // score add and repaint
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
@@ -206,6 +234,6 @@ class Play extends Phaser.Scene {
 
       updateTimer() {
         //update timer
-        this.timerRight.text = Math.ceil((this.clock.delay - this.clock.getElapsed()) / 1000); 
+        this.timerRight.text = ': ' + Math.ceil((this.clock.delay - this.clock.getElapsed()) / 1000); 
       }
   }

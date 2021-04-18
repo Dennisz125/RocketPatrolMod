@@ -2,7 +2,7 @@
 Name: Dennis Zabluda
 Project Name: Rocket Patrol Mod
 Date: 4/14/21
-Duration: Unkown
+Time took: ~22 hours
 */
 
 // game config
