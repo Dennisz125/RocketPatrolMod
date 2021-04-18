@@ -8,9 +8,9 @@ class Rocket extends Phaser.GameObjects.Sprite {
         this.sfxRocket = scene.sound.add('sfx_rocket'); // add rocket sfx
         this.playerNumber = playerNumber;               // player number; 0 is player 1, 1 is player 2
 
-        this.avatar = scene.add.tileSprite(x - 53, y - 20, 100, 100, 'frog').setOrigin(0, 0);          // add player's avatar
+        this.tounge = scene.add.tileSprite(x - 5, y, 9, 9, 'toungebody').setOrigin(0, 0);
+        this.avatar = scene.add.tileSprite(x - 53, y - 20, 100, 100, 'frog').setOrigin(0, 0);  // add player's avatar
     }
-
     update() {
         switch(this.playerNumber) {
             case 0:
@@ -31,9 +31,11 @@ class Rocket extends Phaser.GameObjects.Sprite {
             if(keyLEFT.isDown && this.x >= this.width/2) {
                 this.x -= this.moveSpeed;
                 this.avatar.x -= this.moveSpeed;
+                this.tounge.x -= this.moveSpeed;
             } else if (keyRIGHT.isDown && this.x <= game.config.width - this.width / 2) {
                 this.x += this.moveSpeed;
                 this.avatar.x += this.moveSpeed;
+                this.tounge.x += this.moveSpeed;
             }
         }
         // fire button
@@ -44,6 +46,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
         // if fired, move up
         if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
             this.y -= this.moveSpeed;
+            this.tounge.scaleY -= this.moveSpeed/9;
         }
         // reset on miss
         if(this.y <= borderUISize * 3 + borderPadding) {
@@ -58,9 +61,11 @@ class Rocket extends Phaser.GameObjects.Sprite {
             if(keyA.isDown && this.x >= borderUISize + this.width) {
                 this.x -= this.moveSpeed;
                 this.avatar.x -= this.moveSpeed;
+                this.tounge.x -= this.moveSpeed;
             } else if (keyD.isDown && this.x <= game.config.width - borderUISize - this.width) {
                 this.x += this.moveSpeed;
                 this.avatar.x += this.moveSpeed;
+                this.tounge.x += this.moveSpeed;
             }
         }
         // fire button
@@ -82,5 +87,6 @@ class Rocket extends Phaser.GameObjects.Sprite {
     reset() {
         this.isFiring = false;
         this.y = game.config.height - borderUISize*2 + 4;
+        this.tounge.scaleY = 1;
     }
   }

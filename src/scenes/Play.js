@@ -45,6 +45,9 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
         
+        // add flys (x1)
+        this.fly01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'fly', 0, 50, 3).setOrigin(0, 0);
+
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -126,6 +129,8 @@ class Play extends Phaser.Scene {
             this.ship01.update();   // update spaceships (x3)
             this.ship02.update();
             this.ship03.update();
+            
+            this.fly01.update();
         }
 
         // check collisions
@@ -141,6 +146,10 @@ class Play extends Phaser.Scene {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);   
         }
+        if(this.checkCollision(this.p1Rocket, this.fly01)) {
+            this.p1Rocket.reset();
+            this.shipExplode(this.fly01);   
+        }
 
         // if there's a second player, check collisions
         if (game.settings.twoPlayer) {
@@ -155,6 +164,10 @@ class Play extends Phaser.Scene {
             if(this.checkCollision(this.p2Rocket, this.ship03)) {
                 this.p2Rocket.reset();
                 this.shipExplode(this.ship03);   
+            }
+            if(this.checkCollision(this.p2Rocket, this.fly01)) {
+                this.p1Rocket.reset();
+                this.shipExplode(this.fly01);   
             }
         }
     }
