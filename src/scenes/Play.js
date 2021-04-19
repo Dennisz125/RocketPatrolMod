@@ -9,9 +9,10 @@ class Play extends Phaser.Scene {
         this.load.image('spaceship', './assets/Dragonfly.png');
         this.load.image('starfield', './assets/Lake.png');
 
-        this.load.image('frog', './assets/Frog.gif');
+        this.load.image('frog', './assets/Frogv2.png');
         this.load.image('fly', './assets/Fly.png');
-        this.load.image('toungebody', './assets/Toungebody.png')
+        this.load.image('toungebody', './assets/Toungebody.png');
+        this.load.image('flyblood', './assets/FlyBlood.png');
 
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
@@ -67,6 +68,7 @@ class Play extends Phaser.Scene {
         
         // initialize score
         this.p1Score = 0;
+        this.p2Score = 0;
 
         // display score
         let scoreConfig = {
@@ -82,6 +84,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderPadding, borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(game.config.width/4, borderPadding*2, this.p2Score, scoreConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -155,19 +158,19 @@ class Play extends Phaser.Scene {
         if (game.settings.twoPlayer) {
             if (this.checkCollision(this.p2Rocket, this.ship01)) {
                 this.p2Rocket.reset();
-                this.shipExplode(this.ship01);
+                this.shipExplode(this.ship01, 1);
             }
             if (this.checkCollision(this.p2Rocket, this.ship02)) {
                 this.p2Rocket.reset();
-                this.shipExplode(this.ship02);
+                this.shipExplode(this.ship02, 1);
             }
             if(this.checkCollision(this.p2Rocket, this.ship03)) {
                 this.p2Rocket.reset();
-                this.shipExplode(this.ship03);   
+                this.shipExplode(this.ship03, 1);   
             }
             if(this.checkCollision(this.p2Rocket, this.fly01)) {
                 this.p2Rocket.reset();
-                this.shipExplode(this.fly01);   
+                this.shipExplode(this.fly01, 1);   
             }
         }
     }
@@ -184,14 +187,14 @@ class Play extends Phaser.Scene {
         }
     }
 
-    shipExplode(ship) {
+    shipExplode(ship, player = 0) {
         // temporarily hide ship
         ship.alpha = 0;
         // create explosion sprite at ship's position
         //let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
         //boom.anims.play('explode');             // play explode animation
 
-        var particles = this.add.particles('rocket');
+        var particles = this.add.particles('flyblood');
         var min, max;
         if (ship.dir) {
             min = 0;
@@ -223,9 +226,16 @@ class Play extends Phaser.Scene {
           ship.alpha = 1;                       // make ship visible again
           boom.destroy();                       // remove explosion sprite
         });*/
+
         // score add and repaint
-        this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score;
+        if (!player) { //if (player 1)
+            this.p1Score += ship.points;
+            this.scoreLeft.text = this.p1Score;
+        } else {    //else (player 2)
+            this.p2Score += ship.points;
+            this.scoreRight.text = this.p2Score;
+        }
+        
         // add additional time to clock, addition is based on ship's points
         this.clock.delay += 250 * ship.points;
 

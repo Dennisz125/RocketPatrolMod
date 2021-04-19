@@ -4,19 +4,19 @@ class Menu extends Phaser.Scene {
     }
     
     preload() {
-        // load audio
-        this.load.audio('sfx_select', './assets/blip_select12.wav');
-        this.load.audio('sfx_explosion', './assets/Flydeath.mp3');
-        this.load.audio('sfx_rocket', './assets/slirp.mp3');
+      // load audio
+      this.load.audio('sfx_select', './assets/blip_select12.wav');
+      this.load.audio('sfx_explosion', './assets/Flydeath.mp3');
+      this.load.audio('sfx_rocket', './assets/slirp.mp3');
     }
 
     create() {
       // menu text configuration
       let menuConfig = {
         fontFamily: 'Courier',
-        fontSize: '28px',
-        backgroundColor: '#F3B141',
-        color: '#000000',
+        fontSize: '50px',
+        backgroundColor: '#013220',
+        color: '#FFFFFF',
         align: 'right',
         padding: {
             top: 5,
@@ -25,13 +25,15 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Pondemics', menuConfig).setOrigin(0.5);
-        menuConfig.color = '#843605';
-        this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize*2 - borderPadding, 'Pondemics', menuConfig).setOrigin(0.5);
+        menuConfig.fontSize = '25px';
+        menuConfig.color = '#FFA500';
+        this.add.text(game.config.width/2, game.config.height/2, 'P1: Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'P2: Use (A) & (D) to move & (W) to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2.5, game.config.height/2 + borderUISize*2 + borderPadding*2, 'Press D for two player mode:', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2 - 20, game.config.height/2 + borderUISize*2 + borderPadding*2, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2.5, game.config.height/2 + borderUISize*3 + borderPadding*3, 'Press ↓ for two player mode:', menuConfig).setOrigin(0.5);
 
         // define keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -42,7 +44,7 @@ class Menu extends Phaser.Scene {
         this.isTwoPlayer = false;
         menuConfig.backgroundColor = '#F3B141';
         menuConfig.color = '#843605';
-        this.twoPlayerBoolText = this.add.text(game.config.width/7*6, game.config.height/2 + borderUISize*2 + borderPadding*2, this.isTwoPlayer.toString(), menuConfig).setOrigin(0.5);
+        this.twoPlayerBoolText = this.add.text(game.config.width/5*4 - 15, game.config.height/2 + borderUISize*3 + borderPadding*3, 'No', menuConfig).setOrigin(0.5);
     }
     
     update() {
@@ -69,10 +71,11 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyDown)) {
           if (this.isTwoPlayer) {
             this.isTwoPlayer = false;
+            this.twoPlayerBoolText.text = 'No';
           } else {
             this.isTwoPlayer = true;
+            this.twoPlayerBoolText.text = 'Yes';
           }
-          this.twoPlayerBoolText.text = this.isTwoPlayer.toString();
         }
       }
   }
