@@ -24,15 +24,7 @@ class Play extends Phaser.Scene {
 
         // green UI background
         //this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
-
-        // white borders
-        /*
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        */
-
+        
         // add player1 (p1) and player2 (p2) if needed
         if (!game.settings.twoPlayer) {
             this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize*1.5 - borderPadding, 'rocket').setOrigin(0.5, 0);
@@ -48,6 +40,12 @@ class Play extends Phaser.Scene {
         
         // add flys (x1)
         this.fly01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'fly', 0, 50, 3).setOrigin(0, 0);
+
+        // white borders
+        this.add.rectangle(0, 0, game.config.width, borderUISize/2, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(0, game.config.height - borderUISize/2, game.config.width, borderUISize/2, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(0, 0, borderUISize/2, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+        this.add.rectangle(game.config.width - borderUISize/2, 0, borderUISize/2, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -83,7 +81,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.scoreLeft = this.add.text(borderPadding, borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(borderPadding*2, borderPadding*2, this.p1Score, scoreConfig);
         this.scoreRight = this.add.text(game.config.width/4, borderPadding*2, this.p2Score, scoreConfig);
 
         // GAME OVER flag
@@ -110,7 +108,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 75
         }
-        this.timerRight = this.add.text(game.config.width - borderUISize*2 - borderPadding*2, borderPadding*2, this.timer / 1000, timerConfig);
+        this.timerRight = this.add.text(game.config.width - borderUISize*2 - borderPadding*3, borderPadding*2, this.timer / 1000, timerConfig);
 
     }
 
